@@ -1,23 +1,31 @@
 import AppLoading from "expo-app-loading";
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
-import { StyleSheet, Text, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { ApolloProvider } from "@apollo/client";
+import client, { isLoggedInVar, tokenVar } from "./apollo";
+import SharedTabsNav from "./navigators/SharedTabsNav";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
   const onFinish = () => setLoading(false);
-  const preload = () => {
+  const preloadAssets = () => {
     const fontsToLoad = [Ionicons.font];
     const fontPromises = fontsToLoad.map((font) => Font.loadAsync(font));
-    const imagesToLoad = [
-      require("./assets/logo.png"),
-      "https://e7.pngegg.com/pngimages/60/414/png-clipart-iced-coffee-cafe-coffee-cup-coffee-cafe-coffee-thumbnail.png",
-    ];
+    const imagesToLoad = [require("./assets/logo.png")];
     const imagePromises = imagesToLoad.map((image) => Asset.loadAsync(image));
     return Promise.all([...fontPromises, ...imagePromises]);
+  };
+  const preload = async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      isLoggedInVar(true);
+      tokenVar(token);
+    }
+    return preloadAssets();
   };
   if (loading) {
     return (
@@ -29,18 +37,10 @@ export default function App() {
     );
   }
   return (
-    <View style={styles.container}>
-      <Text>Hello!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <ApolloProvider client={client}>
+      <NavigationContainer>
+        <SharedTabsNav />
+      </NavigationContainer>
+    </ApolloProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
