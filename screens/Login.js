@@ -55,7 +55,7 @@ export default function Login() {
   return (
     <AuthLayout>
       <TextInput
-        value={watch("username")}
+        value={watch("username", "")}
         placeholder="Username"
         returnKeyType="next"
         autoCapitalize="none"
@@ -64,7 +64,7 @@ export default function Login() {
         onChangeText={(text) => setValue("username", text)}
       />
       <TextInput
-        value={watch("password")}
+        value={watch("password", "")}
         ref={passwordRef}
         placeholder="Password"
         secureTextEntry

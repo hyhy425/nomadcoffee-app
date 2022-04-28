@@ -20,7 +20,7 @@ const CategoryText = styled.Text`
   margin-left: 5px;
 `;
 
-function Photo({ id, name, categories }) {
+function Shop({ id, name, categories }) {
   return (
     <Container>
       <Header>
@@ -30,7 +30,7 @@ function Photo({ id, name, categories }) {
         <CategoryText>Category:</CategoryText>
         <CategoryText>
           {categories?.map((category) => (
-            <CategoryText key={category.id}>{category.name}</CategoryText>
+            <CategoryText key={category.id}>{category.name} </CategoryText>
           ))}
         </CategoryText>
       </Category>
@@ -38,4 +38,4 @@ function Photo({ id, name, categories }) {
   );
 }
 
-export default Photo;
+export default Shop;

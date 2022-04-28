@@ -2,7 +2,7 @@ import { gql, useQuery } from "@apollo/client";
 import React from "react";
 import { useState } from "react";
 import { FlatList } from "react-native";
-import Photo from "../components/Photo";
+import Shop from "../components/Shop";
 import ScreenLayout from "../components/ScreenLayout";
 
 const COFFEESHOPS_QUERY = gql`
@@ -24,14 +24,14 @@ const COFFEESHOPS_QUERY = gql`
   }
 `;
 
-export default function Feed() {
+export default function Home() {
   const { data, loading, refetch, fetchMore } = useQuery(COFFEESHOPS_QUERY, {
     variables: {
       offset: 0,
     },
   });
-  const renderPhoto = ({ item: photo }) => {
-    return <Photo {...photo} />;
+  const renderShop = ({ item: shop }) => {
+    return <Shop {...shop} />;
   };
   const refresh = async () => {
     setRefreshing(true);
@@ -55,8 +55,8 @@ export default function Feed() {
         style={{ width: "100%" }}
         showsVerticalScrollIndicator={false}
         data={data?.seeCoffeeShops}
-        keyExtractor={(photo) => "" + photo.id}
-        renderItem={renderPhoto}
+        keyExtractor={(shop) => "" + shop.id}
+        renderItem={renderShop}
       />
     </ScreenLayout>
   );
