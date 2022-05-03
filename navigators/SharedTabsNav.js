@@ -1,53 +1,40 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import TabIcon from "../components/nav/TabIcon";
-import SharedStackNav from "./SharedStackNav";
+import { Ionicons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
+import TabsNav from "./TabsNav";
+import UploadNav from "./UploadNav";
+import UploadForm from "../screens/UploadForm";
 
-const Tabs = createBottomTabNavigator();
+const Stack = createStackNavigator();
 
-export default function LoggedInNav() {
+export default function SharedTabsNav() {
   return (
-    <Tabs.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          backgroundColor: "black",
-          borderTopColor: "rgba(255,255,255,0.5)",
-        },
-        tabBarActiveTintColor: "white",
-      }}
-    >
-      <Tabs.Screen
-        name="TabHome"
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Tabs"
+        options={{ headerShown: false }}
+        component={TabsNav}
+      />
+      <Stack.Screen
+        name="Upload"
+        options={{ headerShown: false }}
+        component={UploadNav}
+      />
+      <Stack.Screen
+        name="UploadForm"
         options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon iconName={"home"} color={color} focused={focused} />
+          headerBackTitleVisible: false,
+          headerBackImage: ({ tintColor }) => (
+            <Ionicons color={tintColor} name="close" size={28} />
           ),
+          title: "Upload",
+          headerTintColor: "white",
+          headerStyle: {
+            backgroundColor: "black",
+          },
         }}
-      >
-        {() => <SharedStackNav screenName="Home" />}
-      </Tabs.Screen>
-      <Tabs.Screen
-        name="TabSearch"
-        options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon iconName={"search"} color={color} focused={focused} />
-          ),
-        }}
-      >
-        {() => <SharedStackNav screenName="Search" />}
-      </Tabs.Screen>
-      <Tabs.Screen
-        name="TabMe"
-        options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon iconName={"person"} color={color} focused={focused} />
-          ),
-        }}
-      >
-        {() => <SharedStackNav screenName="Me" />}
-      </Tabs.Screen>
-    </Tabs.Navigator>
+        component={UploadForm}
+      />
+    </Stack.Navigator>
   );
 }
